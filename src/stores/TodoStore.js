@@ -1,45 +1,61 @@
-import {action, decorate, observable} from "mobx";
-
-
-let defaultTasks = [
-    {id: 1, title: 'Прочитать книгу', done: false},
-    {id: 2, title: 'Прочитать книгу', done: false},
-    {id: 3, title: 'Прочитать книгу', done: false},
-    {id: 4, title: 'Прочитать книгу', done: false},
-]
+import {action, observable, computed } from "mobx";
+import uniqid from 'uniqid'
 
 class TodoListStore {
-    todos: [
-        {id: 1, title: "Прочитать книгу", done: false},
-        {id: 2, title: 'Прочитать книгу', done: false},
-        {id: 3, title: 'Прочитать книгу', done: false},
-        {id: 4, title: 'Прочитать книгу', done: false},
+
+    @observable showUnfulfilled = false
+
+    @observable todos = [
+        {id: 1, title: "Прочитать книгу", filter: 'РАБОТА', done: false},
+        {id: 2, title: 'Полить цветы', filter: 'СВОБОДНОЕ ВРЕМЯ', done: false},
+        {id: 3, title: 'Прогуляться', filter: 'СВОБОДНОЕ ВРЕМЯ', done: true},
+        {id: 4, title: 'Сдать долг', filter: 'УЧЕБА', done: false},
     ];
 
-    get activeTasks() {
-        return this.tasks.filter(task => !task.done)
+    @computed get filteredTodos() {
+        if (this.showUnfulfilled) {
+            return this.todos.filter(todo => todo.done == false);
+        }
+        return this.todos;
     }
 
+
+    @action
+    setTodos(data) {
+        this.todos = data;
+    }
+
+
+    @action
+    setShowUnfulfilled() {
+        this.showUnfulfilled = !this.showUnfulfilled;
+    }
+
+    @action
     addTodo(todo) {
-        this.todos.push(todo)
+        let currentTodos = this.todos
+        currentTodos.push({...todo, id: uniqid.time()})
+        this.setTodos(currentTodos)
     }
 
+
+    @action
     deleteTodo(id) {
-        this.todos.filter(todo => todo.id !== id)
+        let currentTodos = this.todos
+        currentTodos = currentTodos.filter(todo => todo.id !== id)
+        this.setTodos(currentTodos)
     }
 
+
+    @action
     toggleTodo(id) {
-        // let currentTodo = this.todos.find(todo => todo.id == id)
-        // currentTodo.done = !currentTodo.done
+        let currentTodos = this.todos;
+        const index = currentTodos.map(todo => todo.id).indexOf(id);
+        currentTodos[index].done = !currentTodos[index].done;
+        this.setTodos(currentTodos);
     }
 }
 
-TodoListStore = decorate(TodoListStore, {
-    tasks: observable,
-    addTodo: action,
-    deleteTodo: action,
-    toggleTodo: action
-})
 
 export default new TodoListStore();
 

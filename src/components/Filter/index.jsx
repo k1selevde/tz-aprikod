@@ -1,17 +1,36 @@
 import React from 'react';
+import {ReactComponent as FilterSvg} from '../../static/icons/filter.svg'
+import {observer} from "mobx-react";
 
 import './Filter.scss'
 
-const Filter = () => {
-    return (
-        <div>
-            <select name="" id="">
-                <option value="">РАБОТА</option>
-                <option value="">УЧЕБА</option>
-                <option value="">СВОБОДНОЕ</option>
-            </select>
-        </div>
-    );
-};
+
+
+@observer
+class Filter extends React.Component {
+    constructor() {
+        super();
+        this.filterUnfulfilled = this.filterUnfulfilled.bind(this)
+    }
+
+    filterUnfulfilled() {
+        this.props.todoStore.setShowUnfulfilled()
+    }
+
+    render() {
+        return (
+            <div className="filter__wrap">
+                <FilterSvg />
+                <p className="filter__text">Показать невыполненные</p>
+                <input
+                    type="checkbox"
+                    className="filter__checkbox"
+                    checked={this.props.todoStore.showUnfulfilled}
+                    onChange={this.filterUnfulfilled}
+                />
+            </div>
+        )
+    }
+}
 
 export default Filter;

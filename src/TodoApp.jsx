@@ -1,17 +1,28 @@
 import React from 'react';
-import {TodoInput, TodoList} from './components'
+import DevTools from "mobx-react-devtools";
+import { observer } from "mobx-react";
 
-const TodoApp = ({todoStore}) => {
+import {TodoInput, TodoList, Filter} from './components'
 
-    return (
-        <div className="app__outer">
-            <div className="app__container">
-                <h3>TZ-TODO</h3>
-                <TodoInput />
-                <TodoList />
+
+@observer
+class TodoApp extends React.Component {
+
+    render() {
+        const { todoStore } = this.props;
+        return (
+            <div className="app__outer">
+                {/*<DevTools />*/}
+                <div className="app__container">
+                    <h3 className="app__title">TZ-TODO</h3>
+                    <TodoInput todoStore={todoStore} />
+                    <Filter todoStore={todoStore}/>
+                    <TodoList todoStore={todoStore} />
+                </div>
             </div>
-        </div>
-    );
+        );
+    }
+
 };
 
 export default TodoApp;

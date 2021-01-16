@@ -1,3 +1,17 @@
 .filter {
-
+  &__wrap {
+    margin-top: 40px;
+    border-bottom: 1px solid black;
+    padding-bottom: 5px;
+    margin-bottom: 18px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+  }
+  &__text {
+    margin-left: 10px;
+  }
+  &__checkbox {
+    margin-left: 10px;
+  }
 }
