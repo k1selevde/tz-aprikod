@@ -1,19 +1,44 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
-import DevTools from 'mobx-react-devtools';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <DevTools />
-        <h1>Hello world!</h1>
-      </div>
-    );
-  }
-}
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import TodoStore from './stores/TodoStore'
+import TodoApp from './TodoApp'
+
+import './styles/index.scss'
+
+
+
+
+// const counterState = observable({
+//     count: 0,
+// })
+//
+// counterState.increment = function() {
+//     this.count++
+// }
+//
+// counterState.decrement = function() {
+//     this.count--
+// }
+
+
+// @observer class TodoApp extends Component {
+//
+//  handleIncrement = () => { this.props.store.increment()}
+//  handleDecrement = () => { this.props.store.decrement()}
+//
+//   render() {
+//     return (
+//       <div className="TodoApp">
+//         <DevTools />
+//
+//       </div>
+//     );
+//   }
+// }
+
+ReactDOM.render(<TodoApp todoStore={TodoStore}/>, document.getElementById('root'));
 
 serviceWorker.unregister();
